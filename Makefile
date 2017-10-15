@@ -7,8 +7,15 @@ $(eval $(call defw,VERSION,latest))
 
 # Targets
 .PHONY: build
-build:: ##@Docker Build the Sylius application image
+build:: ##@Docker Build the Sylius-ready image
 	docker build \
 		-f Dockerfile \
 		-t $(NS)/$(REPO):$(VERSION) \
 		.
+
+.PHONY: run
+run:: ##@Docker Run a container from this image
+	docker run \
+		--name=sylius-nginx-php-fpm \
+		--rm \
+		$(NS)/$(REPO):$(VERSION)
