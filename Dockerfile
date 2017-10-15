@@ -72,13 +72,10 @@ RUN apt-key adv --fetch-keys http://nginx.org/keys/nginx_signing.key \
 		nginx \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log
+    && ln -sf /proc/1/fd/1 /var/log/nginx/access.log \
+    && ln -sf /proc/1/fd/2 /var/log/nginx/error.log
 
 COPY supervisor/sylius.conf /etc/supervisor/conf.d/sylius.conf
-
-# Operate as www-data
-USER www-data
 
 ENTRYPOINT ["/entrypoint.sh", "/usr/bin/supervisord"]
 CMD ["-c", "/etc/supervisor/supervisord.conf"]
