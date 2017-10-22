@@ -51,6 +51,14 @@ RUN php -r 'readfile("https://getcomposer.org/installer");' > composer-setup.php
 	&& rm -f composer-setup.php \
 	&& chown www-data.www-data /var/www
 
+# All things yarn
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get install -y --no-install-recommends \
+     nodejs \
+     yarn \
+    && apt-get clean all
+
 # Prepare entrypoint.d pattern
 COPY entrypoint.sh /entrypoint.sh
 RUN mkdir /entrypoint.d
