@@ -22,6 +22,8 @@ RUN apt-get update \
 		libjpeg62-turbo-dev \
 		libmcrypt4 \
 		libmcrypt-dev \
+    && pecl install apcu \
+    && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apcu.ini
 	&& apt-get clean all \
 	&& docker-php-ext-enable \
 		opcache \
