@@ -45,6 +45,13 @@ RUN apt-get update \
 # Sylius PHP configuration
 COPY php/sylius.ini /usr/local/etc/php/conf.d/sylius.ini
 
+# All things nodejs & yarn
+RUN curl -sS http://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    && echo "deb http://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+    && curl -sL http://deb.nodesource.com/setup_8.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get install yarn
+
 # All things composer
 RUN php -r 'readfile("https://getcomposer.org/installer");' > composer-setup.php \
 	&& php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
